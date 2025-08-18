@@ -4,7 +4,7 @@ const animals = {
         scientific: "panthera tigris",
         image: "assets/images/animals/tiger1.png",
         audio: "assets/audio/tiger.mp3",
-        youtube: "https://youtube.com/watch?v=dQw4w9WgXcQ",
+        youtube: "https://youtu.be/gc04YvT6o5I",
         description: "Tigers are the largest members of the cat family, once roaming widely across Asia from Turkey to the Russian Far East. Today, their territory has shrunk by over 95%, leaving fragmented populations scattered in 13 countries. Fewer than 5,000 tigers remain in the wild, their survival threatened by relentless poaching for skins and body parts, shrinking forests cleared for agriculture, and growing conflict with humans. Every loss diminishes the balance of ecosystems where they serve as apex predators. Unless urgent protection continues and expands, the world's most iconic striped hunters may vanish forever, slipping silently into extinction."
     },
     elephant: {
