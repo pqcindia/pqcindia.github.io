@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LION - Wild Animals</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body class="animal-page">
+    <a href="../index.html" class="back-btn">← Back</a>
+    
+    <div class="animal-hero">
+        <img src="../assets/images/animals/lion.jpg" alt="LION" class="animal-hero-image" id="heroImage" onerror="this.src='https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=LION'">
+        <div class="animal-hero-overlay"></div>
+        
+        <div class="animal-hero-content" id="heroContent">
+            <h1 class="animal-name">LION</h1>
+            <div class="animal-scientific">panthera leo</div>
+            <p class="animal-description">
+                Lions are apex predators known as the 'King of the Jungle,' though they primarily inhabit savannas and grasslands. Living in social groups called prides, they are the only cats that hunt cooperatively. Male lions are distinguished by their impressive manes, which serve as protection and a symbol of strength. Their populations have declined significantly, with fewer than 25,000 remaining in the wild due to habitat loss and human-wildlife conflict.
+            </p>
+            
+            <div class="animal-controls">
+                <button class="control-btn hear-btn" onclick="playAnimalSound()">
+                    <span>🔊</span> HEAR
+                </button>
+                <a href="https://youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="control-btn watch-btn">
+                    <span>▶</span> WATCH
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <audio id="animalSound" preload="metadata">
+        <source src="../assets/audio/lion.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // Image and content loading animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const heroImage = document.getElementById('heroImage');
+            const heroContent = document.getElementById('heroContent');
+            
+            function handleImageLoad() {
+                heroImage.classList.add('loaded');
+                // Trigger text animation after a short delay
+                setTimeout(() => {
+                    heroContent.classList.add('loaded');
+                }, 200);
+            }
+            
+            if (heroImage.complete) {
+                handleImageLoad();
+            } else {
+                heroImage.addEventListener('load', handleImageLoad);
+                heroImage.addEventListener('error', handleImageLoad); // Also animate on error/placeholder
+            }
+        });
+
+        function playAnimalSound() {
+            const audio = document.getElementById('animalSound');
+            const button = document.querySelector('.hear-btn');
+            
+            if (audio.paused) {
+                audio.play().then(() => {
+                    button.innerHTML = '<span>⏸</span> PAUSE';
+                }).catch(error => {
+                    console.error('Error playing audio:', error);
+                    alert('Audio file not found. Please add lion.mp3 to assets/audio/ folder.');
+                });
+            } else {
+                audio.pause();
+                button.innerHTML = '<span>🔊</span> HEAR';
+            }
+            
+            audio.onended = function() {
+                button.innerHTML = '<span>🔊</span> HEAR';
+            };
+        }
+    </script>
+</body>
+</html>

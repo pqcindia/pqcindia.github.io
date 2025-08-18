@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{name}} - Wild Animals</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body class="animal-page">
+    <a href="../index.html" class="back-btn">← Back</a>
+    
+    <div class="animal-hero">
+        <img src="../{{image}}" alt="{{name}}" class="animal-hero-image" id="heroImage" onerror="this.src='https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text={{name}}'">
+        <div class="animal-hero-overlay"></div>
+        
+        <div class="animal-hero-content" id="heroContent">
+            <h1 class="animal-name">{{name}}</h1>
+            <div class="animal-scientific">{{scientific}}</div>
+            <p class="animal-description">
+                {{description}}
+            </p>
+            
+            <div class="animal-controls">
+                <button class="control-btn hear-btn" onclick="playAnimalSound()">
+                    <span>🔊</span> HEAR
+                </button>
+                <a href="{{youtube}}" target="_blank" class="control-btn watch-btn">
+                    <span>▶</span> WATCH
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <audio id="animalSound" preload="metadata">
+        <source src="../{{audio}}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // Image and content loading animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const heroImage = document.getElementById('heroImage');
+            const heroContent = document.getElementById('heroContent');
+            
+            function handleImageLoad() {
+                heroImage.classList.add('loaded');
+                // Trigger text animation after a short delay
+                setTimeout(() => {
+                    heroContent.classList.add('loaded');
+                }, 200);
+            }
+            
+            if (heroImage.complete) {
+                handleImageLoad();
+            } else {
+                heroImage.addEventListener('load', handleImageLoad);
+                heroImage.addEventListener('error', handleImageLoad); // Also animate on error/placeholder
+            }
+        });
+
+        function playAnimalSound() {
+            const audio = document.getElementById('animalSound');
+            const button = document.querySelector('.hear-btn');
+            
+            if (audio.paused) {
+                audio.play().then(() => {
+                    button.innerHTML = '<span>⏸</span> PAUSE';
+                }).catch(error => {
+                    console.error('Error playing audio:', error);
+                    alert('Audio file not found. Please add {{key}}.mp3 to assets/audio/ folder.');
+                });
+            } else {
+                audio.pause();
+                button.innerHTML = '<span>🔊</span> HEAR';
+            }
+            
+            audio.onended = function() {
+                button.innerHTML = '<span>🔊</span> HEAR';
+            };
+        }
+    </script>
+</body>
+</html>
