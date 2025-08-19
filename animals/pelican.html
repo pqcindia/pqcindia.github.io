@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PELICAN - Wild Animals</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body class="animal-page">
+    
+    <div class="animal-hero">
+        <img src="../assets/images/animals/pelican.png" alt="TIGER" class="animal-hero-image" id="heroImage" 
+             onerror="this.src='https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=TIGER'">
+        <div class="animal-hero-overlay"></div>
+        
+        <div class="animal-hero-content" id="heroContent">
+            <h1 class="animal-name">SPOT-BILLED PELICAN</h1>
+            <div class="animal-scientific">pelecanus phillipensis</div>
+            <br><br><br>
+            <p class="animal-description">
+The spot-billed pelican, with its distinct gray-brown plumage and characteristic bill marked with dark spots, is a majestic waterbird found across southern Asia. Once widespread, its numbers have sharply declined due to wetland destruction, pollution, and overfishing that strips away its food supply. These birds nest colonially in large trees near lakes and rivers, playing an important role in wetland ecosystems. Today, their strongholds survive only in scattered pockets, mostly in India and Sri Lanka, with global populations under strain. Without continued conservation of wetlands and protection from human pressures, the spot-billed pelican risks sliding irreversibly toward extinction.            </p>
+            
+            <style>
+                .animal-controls {
+                    display: flex;
+                    justify-content: space-between; /* left + right alignment */
+                    margin-bottom: 10px; /* spacing between rows */
+                }
+
+                .control-btn {
+                    padding: 8px 14px;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                }
+
+                .control-btn:hover {
+                    background: #ddd;
+                }
+
+                .hear-btn {
+                    align-self: flex-start;
+                }
+
+                .watch-btn {
+                    align-self: flex-end;
+                }
+            </style>   
+
+            <!-- Tiger roar + video -->
+            <div class="animal-controls">
+                <button class="control-btn hear-btn roar-btn" data-label="HEAR" onclick="playSound('roar')">
+                    <span>🔊</span> HEAR
+                </button>
+                <a href="https://www.youtube.com/watch?v=UpXoKjV1yKI" target="_blank" class="control-btn watch-btn">
+                    <span>▶</span> WATCH
+                </a>
+            </div>
+
+            <!-- Hindi & English narration -->
+            <div class="animal-controls">
+                <button class="control-btn hear-btn hindi-btn" data-label="हिंदी" onclick="playSound('hindi')">
+                    <span>🔊</span> हिंदी
+                </button>
+                <button class="control-btn hear-btn english-btn" data-label="English" onclick="playSound('english')">
+                    <span>🔊</span> English
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio files -->
+    <audio id="roarSound" preload="metadata">
+        <source src="../assets/audio/pelican.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="hindiSound" preload="metadata">
+        <source src="../assets/audio/pelicanhindi.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="englishSound" preload="metadata">
+        <source src="../assets/audio/pelicanenglish.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // Animation for image + content
+        document.addEventListener('DOMContentLoaded', function() {
+            const heroImage = document.getElementById('heroImage');
+            const heroContent = document.getElementById('heroContent');
+            
+            function handleImageLoad() {
+                heroImage.classList.add('loaded');
+                setTimeout(() => {
+                    heroContent.classList.add('loaded');
+                }, 200);
+            }
+            
+            if (heroImage.complete) {
+                handleImageLoad();
+            } else {
+                heroImage.addEventListener('load', handleImageLoad);
+                heroImage.addEventListener('error', handleImageLoad);
+            }
+        });
+
+        // Audio player for multiple buttons
+        function playSound(type) {
+            const audioMap = {
+                roar: document.getElementById('roarSound'),
+                hindi: document.getElementById('hindiSound'),
+                english: document.getElementById('englishSound')
+            };
+
+            const button = document.querySelector(`.${type}-btn`);
+            const audio = audioMap[type];
+
+            // Stop all other audios
+            Object.keys(audioMap).forEach(key => {
+                if (key !== type) {
+                    audioMap[key].pause();
+                    audioMap[key].currentTime = 0;
+                    const otherBtn = document.querySelector(`.${key}-btn`);
+                    if (otherBtn) {
+                        otherBtn.innerHTML = `<span>🔊</span> ${otherBtn.dataset.label}`;
+                    }
+                }
+            });
+
+            // Toggle play/pause
+            if (audio.paused) {
+                audio.play().then(() => {
+                    button.innerHTML = '<span>⏸</span> PAUSE';
+                }).catch(error => {
+                    console.error('Error playing audio:', error);
+                    alert('Audio file not found.');
+                });
+            } else {
+                audio.pause();
+                button.innerHTML = `<span>🔊</span> ${button.dataset.label}`;
+            }
+
+            audio.onended = function() {
+                button.innerHTML = `<span>🔊</span> ${button.dataset.label}`;
+            };
+        }
+    </script>
+</body>
+</html>

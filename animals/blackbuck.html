@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLACKBUCK - Wild Animals</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body class="animal-page">
+    
+    <div class="animal-hero">
+        <img src="../assets/images/animals/blackbuck.png" alt="TIGER" class="animal-hero-image" id="heroImage" 
+             onerror="this.src='https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=TIGER'">
+        <div class="animal-hero-overlay"></div>
+        
+        <div class="animal-hero-content" id="heroContent">
+            <h1 class="animal-name">BLACKBUCK</h1>
+            <div class="animal-scientific">antilope cervicapra</div>
+            <br><br><br>
+            <p class="animal-description">
+                The blackbuck, a graceful antelope native to the Indian subcontinent, is known for its striking spiral horns and swift movements across open grasslands. Once abundant in large herds, it now survives in fragmented populations due to extensive habitat loss. Agricultural expansion and urban development have reduced its grazing lands, while hunting for sport and poaching for meat and skin have historically devastated numbers. Though legally protected in India, the blackbuck remains vulnerable, with many populations confined to reserves. Its survival depends on safeguarding remaining grasslands and ensuring coexistence with human communities, or this emblem of the plains may fade away.
+            </p>
+            
+            <style>
+                .animal-controls {
+                    display: flex;
+                    justify-content: space-between; /* left + right alignment */
+                    margin-bottom: 10px; /* spacing between rows */
+                }
+
+                .control-btn {
+                    padding: 8px 14px;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                }
+
+                .control-btn:hover {
+                    background: #ddd;
+                }
+
+                .hear-btn {
+                    align-self: flex-start;
+                }
+
+                .watch-btn {
+                    align-self: flex-end;
+                }
+            </style>   
+
+            <!-- Tiger roar + video -->
+            <div class="animal-controls">
+                <button class="control-btn hear-btn roar-btn" data-label="HEAR" onclick="playSound('roar')">
+                    <span>🔊</span> HEAR
+                </button>
+                <a href="https://www.youtube.com/watch?v=hzuKz-mFR-k" target="_blank" class="control-btn watch-btn">
+                    <span>▶</span> WATCH
+                </a>
+            </div>
+
+            <!-- Hindi & English narration -->
+            <div class="animal-controls">
+                <button class="control-btn hear-btn hindi-btn" data-label="हिंदी" onclick="playSound('hindi')">
+                    <span>🔊</span> हिंदी
+                </button>
+                <button class="control-btn hear-btn english-btn" data-label="English" onclick="playSound('english')">
+                    <span>🔊</span> English
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio files -->
+    <audio id="roarSound" preload="metadata">
+        <source src="../assets/audio/blackbuck.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="hindiSound" preload="metadata">
+        <source src="../assets/audio/blackbuckhindi.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="englishSound" preload="metadata">
+        <source src="../assets/audio/blackbuckenglish.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // Animation for image + content
+        document.addEventListener('DOMContentLoaded', function() {
+            const heroImage = document.getElementById('heroImage');
+            const heroContent = document.getElementById('heroContent');
+            
+            function handleImageLoad() {
+                heroImage.classList.add('loaded');
+                setTimeout(() => {
+                    heroContent.classList.add('loaded');
+                }, 200);
+            }
+            
+            if (heroImage.complete) {
+                handleImageLoad();
+            } else {
+                heroImage.addEventListener('load', handleImageLoad);
+                heroImage.addEventListener('error', handleImageLoad);
+            }
+        });
+
+        // Audio player for multiple buttons
+        function playSound(type) {
+            const audioMap = {
+                roar: document.getElementById('roarSound'),
+                hindi: document.getElementById('hindiSound'),
+                english: document.getElementById('englishSound')
+            };
+
+            const button = document.querySelector(`.${type}-btn`);
+            const audio = audioMap[type];
+
+            // Stop all other audios
+            Object.keys(audioMap).forEach(key => {
+                if (key !== type) {
+                    audioMap[key].pause();
+                    audioMap[key].currentTime = 0;
+                    const otherBtn = document.querySelector(`.${key}-btn`);
+                    if (otherBtn) {
+                        otherBtn.innerHTML = `<span>🔊</span> ${otherBtn.dataset.label}`;
+                    }
+                }
+            });
+
+            // Toggle play/pause
+            if (audio.paused) {
+                audio.play().then(() => {
+                    button.innerHTML = '<span>⏸</span> PAUSE';
+                }).catch(error => {
+                    console.error('Error playing audio:', error);
+                    alert('Audio file not found.');
+                });
+            } else {
+                audio.pause();
+                button.innerHTML = `<span>🔊</span> ${button.dataset.label}`;
+            }
+
+            audio.onended = function() {
+                button.innerHTML = `<span>🔊</span> ${button.dataset.label}`;
+            };
+        }
+    </script>
+</body>
+</html>
